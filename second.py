@@ -1,6 +1,6 @@
-
 # 27.03.2022
-# First approach by Naive Algorithm in O(N^2) time complexity
+# approach by dynamic programming in pseudo-polynomial time complexity
+
 class SubsetSum:
 
     def __init__(self, nums, target_sum):
