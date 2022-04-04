@@ -49,7 +49,7 @@ class SubsetSum:
 if __name__ == '__main__':
 
     M = 9
-    n = [25, 12, 3, 4, 1, 2, 66]
+    n = [2, 5, 3, 4, 1]
 
     problem = SubsetSum(n, M)
     problem.solve()
