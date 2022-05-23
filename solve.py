@@ -4,19 +4,18 @@ class SubsetSum:
         self.array_size = array_size
         self.array_elements = []
         self.target_sum = target_sum
-        self.dp_table = [[False for _ in range(target_sum + 1)] for _ in range(array_size + 1)]
+        self.dp_table = [[-1 for _ in range(target_sum + 1)] for _ in range(array_size + 1)]
 
 
 class BruteForce(SubsetSum):
     def recursive_function(self, arr, size, target_sum):
         if target_sum == 0:
             return True
-        if size == 0:
+        if size < 0 or target_sum < 0:
             return False
-        if arr[size - 1] > target_sum:
-            return self.recursive_function(arr, size - 1, target_sum)
-        return self.recursive_function(arr, size - 1, target_sum) or self.recursive_function(arr, size - 1,
-                                                                                             target_sum - arr[size - 1])
+        include = self.recursive_function(arr, size - 1, target_sum - arr[size])
+        exclude = self.recursive_function(arr, size - 1, target_sum)
+        return include or exclude
 
 
 class Memoization:
@@ -48,24 +47,19 @@ class DynamicProgramming(SubsetSum):
         self.array_elements = array
         self.array_size = size
         self.target_sum = target_sum
-        # initialize the first row and first column
-        for i in range(size + 1):
-            self.dp_table[i][0] = True
-        for i in range(1, target_sum + 1):
-            self.dp_table[0][i] = False
+        for i in range(size):
+            for j in range(target_sum):
+                if i == 0:
+                    array[i][j] = False
+                if j == 0:
+                    array[i][j] = True
         # we have to construct the table with the cells one by one
         for rowIndex in range(1, size + 1):
             for colIndex in range(1, target_sum + 1):
-                if colIndex < array[rowIndex - 1]:
-                    self.dp_table[rowIndex][colIndex] = self.dp_table[rowIndex - 1][colIndex]
+                if array[rowIndex - 1] > colIndex:
+                    array[rowIndex][colIndex] = array[rowIndex - 1][colIndex]
                 else:
-                    if self.dp_table[rowIndex - 1][colIndex]:
-                        # this is when we do NOT include the given item rowIndex
-                        self.dp_table[rowIndex][colIndex] = self.dp_table[rowIndex - 1][colIndex]
-                    else:
-                        # do include the item i
-                        self.dp_table[rowIndex][colIndex] = self.dp_table[rowIndex - 1][
-                            colIndex - array[rowIndex - 1]]
+                    array[rowIndex][colIndex] = array[rowIndex-1][colIndex] or array[rowIndex - 1][colIndex - array[rowIndex - 1]]
         return self.dp_table[size][target_sum]
 
     def show_result(self):
