@@ -34,9 +34,9 @@ def calculate_time():
 
 calculate_time()
 x = [i for i in range(1, 18)]
-plt.plot(x, br_list, label='Brute')
-plt.plot(x, dp_list, label='dp')
-plt.plot(x, me_list, label='memo')
+plt.plot(x, br_list, label='Memoization')
+plt.plot(x, dp_list, label='Tabulation')
+plt.plot(x, me_list, label='Brute Force')
 print(br_list)
 print(dp_list)
 print(me_list)
